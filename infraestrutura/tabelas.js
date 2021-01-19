@@ -1,7 +1,8 @@
 class Tabelas {
     init(conexao) {
-        this.conexao = conexao;
-        this.criarAtendimentos();
+        this.conexao = conexao
+
+        this.criarAtendimentos()
     }
 
     criarAtendimentos() {
@@ -9,12 +10,12 @@ class Tabelas {
 
         this.conexao.query(sql, erro => {
             if (erro) {
-                console.log(erro);
+                console.log(erro)
             } else {
-                console.log('Tabela criada com sucesso')
+                console.log('Tabela Atendimentos criada com sucesso')
             }
-        });
+        })
     }
 }
 
-module.exports = new Tabelas;
+module.exports = new Tabelas

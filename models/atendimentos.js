@@ -1,13 +1,13 @@
-const moment = require('moment');
-const conexao = require('../infraestrutura/conexao');
+const moment = require('moment')
+const conexao = require('../infraestrutura/conexao')
 
 class Atendimento {
-    adiciona(atendimento) {
-        const dataCriacao = moment().format('YYYY-MM-DD HH:MM:SS');
-        const data = moment(atendimento.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS');
+    adiciona(atendimento, res) {
+        const dataCriacao = moment().format('YYYY-MM-DD HH:MM:SS')
+        const data = moment(atendimento.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS')
 
-        const dataEhValida = moment(data).isSameOrAfter(dataCriacao);
-        const clienteEhValido = atendimento.cliente.length >= 5;
+        const dataEhValida = moment(data).isSameOrAfter(dataCriacao)
+        const clienteEhValido = atendimento.cliente.length >= 5
 
         const validacoes = [{
                 nome: 'data',
@@ -17,29 +17,30 @@ class Atendimento {
             {
                 nome: 'cliente',
                 valido: clienteEhValido,
-                mensagem: 'Cliente deve ter ao mesmo 5 caractéres'
+                mensagem: 'Cliente deve ter pelo menos cinco caracteres'
             }
-        ];
+        ]
 
-        const erros = validacoes.filter(campo => !campo.valido);
-        const existemErros = erros.length;
+        const erros = validacoes.filter(campo => !campo.valido)
+        const existemErros = erros.length
 
         if (existemErros) {
-            res.status(400).json();
+            res.status(400).json(erros)
         } else {
-            const atendimentoDatado = {...atendimento, dataCriacao, data };
+            const atendimentoDatado = {...atendimento, dataCriacao, data }
 
-            const sql = 'INSERT INTO Atendimentos SET ?';
+            const sql = 'INSERT INTO Atendimentos SET ?'
 
             conexao.query(sql, atendimentoDatado, (erro, resultados) => {
                 if (erro) {
-                    resultados.status(400).json(erro);
+                    res.status(400).json(erro)
                 } else {
-                    resultados.status(201).json(resultados);
+                    res.status(201).json(atendimento)
                 }
-            });
+            })
         }
+
     }
 }
 
-module.exports = new Atendimento;
+module.exports = new Atendimento
