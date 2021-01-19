@@ -1,12 +1,6 @@
-const express = require('express');
-const app = express();
+const customExpress = require('./config/customExpress');
+const app = customExpress();
 
-let port = 8080;
-
-app.listen(port, () => {
-    console.log(`Servidor rodando em 'http://localhost:${port}'`);
-});
-
-app.get('/atendimentos', (req, res) => {
-    res.send('Você esta na rota atendimentos. Está realizando um GET');
+app.listen(3000, () => {
+    console.log(`Servidor rodando em 'http://localhost:3000'`);
 });
